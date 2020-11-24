@@ -15,6 +15,6 @@ public:
 
 	~trafficLight();
 
-}:
+};
 
 #endif	
