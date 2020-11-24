@@ -35,9 +35,9 @@ int main()
     anim.setLightNorthSouth(LightColor::red);
     anim.setLightEastWest(LightColor::green);
 
-    // westbound.getBuffer()->setVehicle(&vb2);
-    // westbound.getBuffer()->getNext()->setVehicle(&vb2);
-    // westbound.getBuffer()->getNext()->getNext()->setVehicle(&vb2);
+    westbound.getBuffer()->setVehicle(&vb2);
+    westbound.getBuffer()->getNext()->setVehicle(&vb2);
+    westbound.getBuffer()->getNext()->getNext()->setVehicle(&vb2);
 
     // northbound.getBuffer()->setVehicle(&vb3);
     // northbound.getBuffer()->getNext()->setVehicle(&vb3);
