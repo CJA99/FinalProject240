@@ -11,4 +11,10 @@ public:
 	int countDown;
 
 	trafficLight();
+	trafficLight(int yLight, int gLight);
+
 	~trafficLight();
+
+}:
+
+#endif	
