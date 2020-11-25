@@ -4,6 +4,7 @@
 #include "Section.h"
 #include "MiddleSection.h"
 #include "Lane.h"
+#include "trafficLight.h"
 
 int main()
 {
@@ -32,8 +33,19 @@ int main()
 
     char dummy;
 
-    anim.setLightNorthSouth(LightColor::red);
-    anim.setLightEastWest(LightColor::green);
+    //anim.setLightNorthSouth(LightColor::red);
+    //anim.setLightEastWest(LightColor::green);
+
+    trafficLight NS{5, 5, 5, "Green"};
+    trafficLight EW{5, 5, 5, "Red"};
+
+    //anim.setLightNorthSouth(LightColor::green);
+    //anim.setLightEastWest(LightColor::red);
+
+    if (NS.getColor() == "Green"){
+	anim.setLightNorthSouth(LightColor::green);
+	anim.setLightEastWest(LightColor::red);
+    }
 
     westbound.getBuffer()->setVehicle(&vb2);
     westbound.getBuffer()->getNext()->setVehicle(&vb2);

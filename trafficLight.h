@@ -15,11 +15,12 @@ public:
 	int countDown;
 
 	trafficLight();
-	trafficLight(int gLight, int yLight, int rLight);
+	trafficLight(int gLight, int yLight, int rLight, string c);
 
 	~trafficLight();
 	
 	void setColor(string c);
+	string getColor();
 	
 };
 
