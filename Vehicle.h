@@ -3,19 +3,24 @@
 
 #include "VehicleBase.h"
 #include "Lane.h"
+#include "Section.h"
 
 class Vehicle : public VehicleBase{
 private:
-    int length;
-    Lane lane;
+    Lane *lane;
     bool atTheEnd;
 
+    Section *start;
+    Section *end;
+    int length;
+
+    bool turningRight;
+
 public:
-    Vehicle(Lane spawnLane, VehicleType type);
-    ~Vehicle();
+    Vehicle(Lane *spawnLane, VehicleType type, bool willTurn);
+    ~Vehicle(){}
 
     void move();
-    void spawn();
     inline bool reachedEnd(){ return atTheEnd; }
 };
 #endif

@@ -5,6 +5,7 @@
 #include "MiddleSection.h"
 #include "Lane.h"
 #include "TrafficLight.h"
+#include "Vehicle.h"
 
 int main()
 {
@@ -48,9 +49,10 @@ int main()
 	anim.setLightEastWest(LightColor::red);
     }
 
-    westbound.getBuffer()->setVehicle(&vb2);
-    westbound.getBuffer()->getNext()->setVehicle(&vb2);
-    westbound.getBuffer()->getNext()->getNext()->setVehicle(&vb2);
+    Vehicle car1(&westbound, VehicleType::car, false);
+    // westbound.getBuffer()->setVehicle(&vb2);
+    // westbound.getBuffer()->getNext()->setVehicle(&vb2);
+    // westbound.getBuffer()->getNext()->getNext()->setVehicle(&vb2);
 
     //northbound.getBuffer()->setVehicle(&vb3);
     //northbound.getBuffer()->getNext()->setVehicle(&vb3);
