@@ -3,6 +3,7 @@
 
 #include "MiddleSection.h"
 #include "Section.h"
+#include "TrafficLight.h"
 #include "VehicleBase.h"
 #include <vector>
 using namespace std;
@@ -13,10 +14,12 @@ private:
     int length;             // Length of a lane
     Direction direction;    // Direction of a lane
     Section *buffer;        // First section of a buffer where, vehicle spawns
+    TrafficLight trafficLight;
 
 public:
     // Constructor
-    Lane(Direction direction, int halfSize, MiddleSection *middleSection1, MiddleSection *middleSection2);
+    Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
+        MiddleSection *middleSection2, TrafficLight light);
     // Destructor
     ~Lane();
 
@@ -25,6 +28,7 @@ public:
     inline Section *getBuffer(){ return buffer; }   // Returns the first section of a buffer
     inline Direction getDirection(){ return direction; } // Returns the direction associated with the Lane
     bool canCreate();                                    // Returns whether there it is possible to create a new Vehicle
+    inline TrafficLight getTrafficLight(){ return trafficLight; }
 };
 
 #endif

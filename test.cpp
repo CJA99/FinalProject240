@@ -17,10 +17,6 @@ int main()
     MiddleSection ms3;
     MiddleSection ms4;
 
-    Lane northbound(Direction::north, halfSize, &ms1, &ms2);
-    Lane southbound(Direction::south, halfSize, &ms3, &ms4);
-    Lane eastbound(Direction::east, halfSize, &ms4, &ms1);
-    Lane westbound(Direction::west, halfSize, &ms2, &ms3);
 
     // std::vector<VehicleBase*> westbound(halfSize * 2 + 2, nullptr);
     // std::vector<VehicleBase*> eastbound(halfSize * 2 + 2, nullptr);
@@ -38,6 +34,11 @@ int main()
 
     TrafficLight NS{5, 5, 5, "Green"};
     TrafficLight EW{5, 5, 5, "Red"};
+
+    Lane northbound(Direction::north, halfSize, &ms1, &ms2, NS);
+    Lane southbound(Direction::south, halfSize, &ms3, &ms4, EW);
+    Lane eastbound(Direction::east, halfSize, &ms4, &ms1, EW);
+    Lane westbound(Direction::west, halfSize, &ms2, &ms3, NS);
 
     //anim.setLightNorthSouth(LightColor::green);
     //anim.setLightEastWest(LightColor::red);
