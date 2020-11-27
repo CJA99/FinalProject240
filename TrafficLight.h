@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-class trafficLight{
+class TrafficLight{
 protected:
 	int G;
 	int Y;
@@ -14,10 +14,10 @@ protected:
 public:
 	int countDown;
 
-	trafficLight();
-	trafficLight(int gLight, int yLight, int rLight, string c);
+	TrafficLight();
+	TrafficLight(int gLight, int yLight, int rLight, string c);
 
-	~trafficLight();
+	~TrafficLight();
 	
 	void setColor(string c);
 	string getColor();

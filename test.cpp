@@ -51,13 +51,13 @@ int main()
     westbound.getBuffer()->getNext()->setVehicle(&vb2);
     westbound.getBuffer()->getNext()->getNext()->setVehicle(&vb2);
 
-    // northbound.getBuffer()->setVehicle(&vb3);
-    // northbound.getBuffer()->getNext()->setVehicle(&vb3);
-    // northbound.getBuffer()->getNext()->getNext()->setVehicle(&vb3);
-    // northbound.getBuffer()->getNext()->getNext()->getNext()->setVehicle(&vb3);
-    // northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
-    // northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
-    // northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
+    //northbound.getBuffer()->setVehicle(&vb3);
+    //northbound.getBuffer()->getNext()->setVehicle(&vb3);
+    //northbound.getBuffer()->getNext()->getNext()->setVehicle(&vb3);
+    //northbound.getBuffer()->getNext()->getNext()->getNext()->setVehicle(&vb3);
+    //northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
+    //northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
+    //northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
     //northbound[4] = northbound[5] = &vb3;
 
     anim.setVehiclesNorthbound(northbound.getLaneVector());
