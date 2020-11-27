@@ -4,7 +4,9 @@
 #include "Lane.h"
 
 // Default constructor creates a lane by linking sections
-Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1, MiddleSection *middleSection2){
+Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
+    MiddleSection *middleSection2, TrafficLight light){
+    trafficLight = light;
     length = 2 + halfSize * 2;
     this->direction = direction;
     Section *lastSection = nullptr;
