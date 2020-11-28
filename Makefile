@@ -1,5 +1,5 @@
 EXECS = test
-OBJS = test.o Animator.o VehicleBase.o Section.o MiddleSection.o Lane.o TrafficLight.o Vehicle.o
+OBJS = test.o Animator.o VehicleBase.o Section.o MiddleSection.o Lane.o TrafficLight.o Vehicle.o Probability.o
 
 #### use next two lines for Mac
 # CC = clang++
