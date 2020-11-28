@@ -2,22 +2,26 @@
 #define __Simulation_CPP__
 
 #include "Probability.h"
+#include "Animator.h"
 #include "Lane.h"
 #include "Vehicle.h"
 #include "TrafficLight.h"
+#include <random>
 #include "VehicleBase.h"
+#include "Simulation.h"
 #include <random>
 #include <string>
+#include <vector>
 
 Simulation::Simulation(){
     filename = "";
-    vVector = {};
-    
+    //vVector<Vehicle>;
+
 }
 
 Simulation::Simulation(string file){
     filename = file;
-    vVector = {};
+    //vVector<Vehicle>;
 }
 
 Simulation::runSim(int seed){
@@ -33,7 +37,7 @@ Simulation::runSim(int seed){
     TrafficLight NS{Probability::getGreenNorthSouth(), Probability::getYellowNorthSouth(), (Probility::getGreenEastWest() + Probability::getYellowEastWest()), "Green"};
     TrafficLight EW{Probability::getGreenEastWest(), Probability::getYellowEastWest(), (Probility::getGreenNorthSouth() + Probability::getYellowNothSouth()), "Red"};
 
-    Animator anim(halfsize);    
+    Animator anim(halfsize);
 
     Lane northbound(Direction::north, halfSize, &ms1, &ms2, NS);
     Lane southbound(Direction::south, halfSize, &ms3, &ms4, EW);
@@ -56,7 +60,7 @@ Simulation::runSim(int seed){
 	}
 	else {
 	    VehicleBase type{truck};
-	}    	
+	}
 
         double randNum1 = rand_double(randomNumberGenerator);
 
@@ -73,11 +77,38 @@ Simulation::runSim(int seed){
             &Lane lane(&westbound);
 	}
 	else{
-	    //fix later
+	    continue;
 	}
 
 	double randNum2 = rand_double(randomNumberGenerator);
 
-	
+    switch(type){
 
+        case VehicleType::car:
+        ///////
+            if(randNum2 < Probability::getProportionRightTurnCars()){
+        	bool RTurn = true;
+            }
+	    else{
+        	bool Rturn = false;
+            }
+    	case VehicleType::suvs:
+    	///////
+    	    if(randNum2 < Probability::getProportionRightTurnSuvs()){
+      		bool RTurn = true;
+	    }
+	    else{
+      		bool Rturn = false;
+    	    }
+    	//////
+    	case VehicleType::trucks:
+    	    if(randNum2 < Probability::getProportionRightTurnTrucks()){
+      		bool RTurn = true;
+	    }
+	    else{
+      		bool Rturn = false;
+    	    }
+    }
+}
 
+#endif

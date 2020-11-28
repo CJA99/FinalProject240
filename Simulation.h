@@ -9,13 +9,14 @@ using namespace std;
 
 class Simulation{
     protected:
-	Vector<Vehicle> vVector;
+	vector<Vehicle> vVector;
 	string filename;
 
     public:
-	Simuation();
+	Simulation();
 	Simulation(string file);
 	~Simulation();
 
 	void runSim();
 }
+#endif
