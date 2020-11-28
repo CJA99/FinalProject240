@@ -18,6 +18,7 @@ private:
 
 public:
     // Constructor
+    Lane(){};
     Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
         MiddleSection *middleSection2, TrafficLight light);
     // Destructor

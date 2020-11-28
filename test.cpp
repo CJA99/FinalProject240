@@ -5,6 +5,7 @@
 #include "MiddleSection.h"
 #include "Lane.h"
 #include "TrafficLight.h"
+#include "Vehicle.h"
 
 int main()
 {
@@ -48,27 +49,23 @@ int main()
 	anim.setLightEastWest(LightColor::red);
     }
 
-    westbound.getBuffer()->setVehicle(&vb2);
-    westbound.getBuffer()->getNext()->setVehicle(&vb2);
-    westbound.getBuffer()->getNext()->getNext()->setVehicle(&vb2);
+    //Vehicle car1(&westbound, VehicleType::car, false);
+    Vehicle suv1(&southbound, VehicleType::car, false);
 
-    //northbound.getBuffer()->setVehicle(&vb3);
-    //northbound.getBuffer()->getNext()->setVehicle(&vb3);
-    //northbound.getBuffer()->getNext()->getNext()->setVehicle(&vb3);
-    //northbound.getBuffer()->getNext()->getNext()->getNext()->setVehicle(&vb3);
-    //northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
-    //northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
-    //northbound.getBuffer()->getNext()->getNext()->getNext()->getNext()->getNext()->getNext()->setVehicle(&vb3);
-    //northbound[4] = northbound[5] = &vb3;
-
+    for (size_t i = 0; i < 20; i++)
+    {
+        //car1.move();
+        suv1.move();
+        /* code */
     anim.setVehiclesNorthbound(northbound.getLaneVector());
     anim.setVehiclesWestbound(westbound.getLaneVector());
     anim.setVehiclesSouthbound(southbound.getLaneVector());
     anim.setVehiclesEastbound(eastbound.getLaneVector());
 
-    anim.draw(0);
+    anim.draw(i);
 
     std::cin.get(dummy);
+    }
 
     // southbound.assign(halfSize * 2 + 2, nullptr); // reset vector
     // northbound.assign(halfSize * 2 + 2, nullptr); // reset
