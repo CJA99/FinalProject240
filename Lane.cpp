@@ -63,6 +63,7 @@ Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
     // Link middlesection2 and startofSecondHalf
     lane.push_back(middleSection2);
     lane.push_back(startOfSecondHalf);
+    startOfSecondHalf->setPrev(middleSection2);
     lastSection = startOfSecondHalf;
 
     // Link the second half and the end buffer

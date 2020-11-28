@@ -2,6 +2,7 @@
 #define __VEHICLE_CPP__
 
 #include "Vehicle.h"
+#include <iostream>
 
 Vehicle::Vehicle(Lane *spawnLane, VehicleType type, bool willTurn) : VehicleBase(type, spawnLane->getDirection()){
     lane = spawnLane;
@@ -26,7 +27,7 @@ Vehicle::Vehicle(Lane *spawnLane, VehicleType type, bool willTurn) : VehicleBase
 void Vehicle::move(){
     start = start->getNext();
     start->setVehicle(this);
-    end->setEmpty();
     end = end->getNext();
+    end->getPrev()->setEmpty();
 }
 #endif
