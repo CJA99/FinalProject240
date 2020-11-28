@@ -1,14 +1,22 @@
+#ifndef __Simulation_CPP__
+#define __Simulation_CPP__
+
 #include "Probability.h"
 #include "Lane.h"
 #include "Vehicle.h"
 #include "TrafficLight.h"
 #include <random>
+#include <string>
 
-int main(int argc, char* argv[]){
-    std::mt19937 randomNumberGenerator; 
-    std::uniform_real_distribution<double> rand_double(0,1);
-
-    randomNumberGenerator.seed(238);
-
-    return 0;
+Simulation::Simulation(){
+    filename = "";
 }
+
+Simulation::Simulation(string file){
+    filename = file;
+}
+
+Simulation::runSim(){
+    
+
+
