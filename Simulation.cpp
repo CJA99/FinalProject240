@@ -1,114 +1,173 @@
 #ifndef __Simulation_CPP__
 #define __Simulation_CPP__
 
-#include "Probability.h"
-#include "Animator.h"
-#include "Lane.h"
-#include "Vehicle.h"
-#include "TrafficLight.h"
-#include <random>
-#include "VehicleBase.h"
 #include "Simulation.h"
 #include <random>
-#include <string>
-#include <vector>
+#include <fstream>
+#include <iostream>
 
-Simulation::Simulation(){
-    filename = "";
-    //vVector<Vehicle>;
+using namespace std;
 
+Simulation::Simulation(string file, int seed){
+	this->seed = seed;
+    ifstream infile;
+    infile.open(file);
+
+    if(!infile){
+        cerr << "Error: could not open file: " << file << endl;
+	}
+
+	int count{};
+	string name;
+	string value;
+
+	while (infile.good()){
+		count++;
+		infile >> name >> value;
+
+		if(count == 1)
+			simTime	 = stoi(value);
+		else if(count == 2)
+			sectionsBeforeIntersection = stoi(value);
+		else if(count == 3)
+			greenNS = stoi(value);
+		else if(count == 4)
+			yellowNS = stoi(value);
+		else if(count == 5)
+			greenEW = stoi(value);
+		else if(count == 6)
+			yellowEW = stoi(value);
+		else if(count == 7)
+			probNewVehicleN = stod(value);
+		else if(count == 8)
+			probNewVehicleS = stod(value);
+		else if(count == 9)
+			probNewVehicleE = stod(value);
+		else if(count == 10)
+			probNewVehicleW = stod(value);
+		else if(count == 11)
+			proportionCars = stod(value);
+		else if(count == 12)
+			proportionSUVs = stod(value);
+		else if(count == 13)
+			probRightCars = stod(value);
+		else if(count == 14)
+			probLeftCars = stod(value);
+		else if(count == 15)
+			probRightSUVs = stod(value);
+		else if(count == 16)
+			probLeftSUVs = stod(value);
+		else if(count == 17)
+			probRightTrucks = stod(value);
+		else if(count == 18)
+			probLeftTrucks = stod(value);
+	}
+	infile.close();
+	proportionTrucks = 1 - proportionCars - proportionSUVs;
 }
 
-Simulation::Simulation(string file){
-    filename = file;
-    //vVector<Vehicle>;
+Simulation::~Simulation(){
+	for (size_t i = 0; i < vehicleVector.size(); i++)
+      delete vehicleVector[i];
+	vehicleVector.clear();
 }
 
-Simulation::runSim(int seed){
-    Probability::readInputTextFile(filename);
+void Simulation::runSim(){
+	char dummy;
 
-    int halfsize = Probability::getHalfsize();
+	Animator anim(sectionsBeforeIntersection);
 
     MiddleSection ms1;
     MiddleSection ms2;
     MiddleSection ms3;
     MiddleSection ms4;
 
-    TrafficLight NS{Probability::getGreenNorthSouth(), Probability::getYellowNorthSouth(), (Probility::getGreenEastWest() + Probability::getYellowEastWest()), "Green"};
-    TrafficLight EW{Probability::getGreenEastWest(), Probability::getYellowEastWest(), (Probility::getGreenNorthSouth() + Probability::getYellowNothSouth()), "Red"};
+	TrafficLight trafficLightNS(greenNS, yellowNS, greenEW + yellowEW, LightColor::green);
+    TrafficLight trafficLightEW(greenEW, yellowEW, greenNS + yellowNS, LightColor::red);
 
-    Animator anim(halfsize);
+    Lane northbound(Direction::north, sectionsBeforeIntersection, &ms1, &ms2, &trafficLightNS);
+    Lane southbound(Direction::south, sectionsBeforeIntersection, &ms3, &ms4, &trafficLightNS);
+    Lane eastbound(Direction::east, sectionsBeforeIntersection, &ms4, &ms1, &trafficLightEW);
+    Lane westbound(Direction::west, sectionsBeforeIntersection, &ms2, &ms3, &trafficLightEW);
 
-    Lane northbound(Direction::north, halfSize, &ms1, &ms2, NS);
-    Lane southbound(Direction::south, halfSize, &ms3, &ms4, EW);
-    Lane eastbound(Direction::east, halfSize, &ms4, &ms1, EW);
-    Lane westbound(Direction::west, halfSize, &ms2, &ms3, NS);
+	anim.setVehiclesNorthbound(northbound.getLaneVector());
+    anim.setVehiclesWestbound(westbound.getLaneVector());
+    anim.setVehiclesSouthbound(southbound.getLaneVector());
+    anim.setVehiclesEastbound(eastbound.getLaneVector());
 
-    std::mt19937 randomNumberGenerator;
+    std::mt19937 mt;
     std::uniform_real_distribution<double> rand_double(0,1);
+    mt.seed(seed);
 
-    randomNumberGenerator.seed(seed);
+	for (int i = 0; i < simTime; i++){
+		createVehicle(&northbound, probNewVehicleN, rand_double(mt), rand_double(mt), rand_double(mt));
+		createVehicle(&westbound, probNewVehicleW, rand_double(mt), rand_double(mt), rand_double(mt));
+		createVehicle(&southbound, probNewVehicleS, rand_double(mt), rand_double(mt), rand_double(mt));
+		createVehicle(&eastbound, probNewVehicleE, rand_double(mt), rand_double(mt), rand_double(mt));
 
-    for (i = 0; i < Probability::getMaximumSimulatedTime(); i++){
-	double randNum = rand_double(randomNumberGenerator);
+		anim.setLightNorthSouth(trafficLightNS.getColor());
+        anim.setLightEastWest(trafficLightEW.getColor());
 
-	if (randNum < Probability::getProportionOfCars()){
-	    VehicleBase type{car};
-	}
-	else if (randNum < (Probability::getProportionOfSuvs() + Probability::getProportionOfCars()){
-	    VehicleBase type{suv};
-	}
-	else {
-	    VehicleBase type{truck};
-	}
+		anim.setVehiclesNorthbound(northbound.getLaneVector());
+        anim.setVehiclesWestbound(westbound.getLaneVector());
+        anim.setVehiclesSouthbound(southbound.getLaneVector());
+        anim.setVehiclesEastbound(eastbound.getLaneVector());
 
-        double randNum1 = rand_double(randomNumberGenerator);
+		anim.draw(i);
+        std::cin.get(dummy);
 
-	if (randNum1 < Probability::getProbNewVehicleNorthbound()){
-	    &Lane lane{&northbound};
+		step();
+		trafficLightNS.decrement();
+        trafficLightEW.decrement();
 	}
-	else if (randNum1 < (Probability::getProbNewVehicleNorthbound() + Probability::getProbNewVehicleSouthbound())){
-	    &Lane lane(&southbound};
-	}
-	else if (randNum1 < (Probability::getProbNewVehicleNorthbound() + Probability::getProbNewVehicleSouthbound() + Probability::getProbNewVehicleEastbound())){
-	    &Lane lane(&eastbound);
-	}
-	else if (randNum1 < (Probability::getProbNewVehicleNorthbound() + Probability::getProbNewVehicleSouthbound() + Probability::getProbNewVehicleEastbound() + Probability::getProbNewVehicleWestbound())){
-            &Lane lane(&westbound);
-	}
-	else{
-	    continue;
-	}
+}
 
-	double randNum2 = rand_double(randomNumberGenerator);
+void Simulation::createVehicle(Lane *lane, double laneProb, double createProb,
+	double vehicleProb, double turnProb){
 
-    switch(type){
+	if((lane->canCreate()) && (createProb <= laneProb)){
+		if(vehicleProb <= proportionCars){
+			Vehicle *car;
+			if(turnProb <= probRightCars)
+				car = new Vehicle(lane, VehicleType::car, true);
+			else
+				car = new Vehicle(lane, VehicleType::car, false);
+			vehicleVector.push_back(car);
+		}
+		else if(vehicleProb <= proportionCars + proportionSUVs){
+			Vehicle *suv;
+			if(turnProb <= probRightSUVs)
+				suv = new Vehicle(lane, VehicleType::suv, true);
+			else
+				suv = new Vehicle(lane, VehicleType::suv, false);
+			vehicleVector.push_back(suv);
+		}
+		else{
+			Vehicle *truck;
+			if(turnProb <= probRightCars)
+				truck = new Vehicle(lane, VehicleType::truck, true);
+			else
+				truck = new Vehicle(lane, VehicleType::truck, false);
+			vehicleVector.push_back(truck);
+		}
+	}
+}
 
-        case VehicleType::car:
-        ///////
-            if(randNum2 < Probability::getProportionRightTurnCars()){
-        	bool RTurn = true;
-            }
-	    else{
-        	bool Rturn = false;
-            }
-    	case VehicleType::suvs:
-    	///////
-    	    if(randNum2 < Probability::getProportionRightTurnSuvs()){
-      		bool RTurn = true;
-	    }
-	    else{
-      		bool Rturn = false;
-    	    }
-    	//////
-    	case VehicleType::trucks:
-    	    if(randNum2 < Probability::getProportionRightTurnTrucks()){
-      		bool RTurn = true;
-	    }
-	    else{
-      		bool Rturn = false;
-    	    }
+void Simulation::step(){
+	std::cout << "idddees: ";
+	for (size_t i = 0; i < vehicleVector.size(); i++){
+		std::cout << vehicleVector[i]->vehicleID << ", ";
+        if (vehicleVector[i]->reachedEnd()){
+			std::cout << "deleting " << vehicleVector[i]->vehicleID << std::endl;
+			// Create a pointer to a vehicle because deletes vector's memory otherwise
+            Vehicle* vehiclePtr = vehicleVector[i];
+            vehicleVector.erase(vehicleVector.begin() + i);
+            delete vehiclePtr;
+        }
     }
+	std::cout << std::endl;
+	for (size_t i = 0; i < vehicleVector.size(); i++)
+		vehicleVector[i]->move();
 }
 
 #endif

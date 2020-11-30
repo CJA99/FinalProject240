@@ -103,7 +103,7 @@ vector<VehicleBase *> Lane::getLaneVector(){
 // If the buffer is empty return true
 bool Lane::canCreate(){
     for (size_t i = 0; i < 4; i++){
-        if (lane[i]->isEmpty())
+        if (!lane[i]->isEmpty())
             return false;
     }
     return true;

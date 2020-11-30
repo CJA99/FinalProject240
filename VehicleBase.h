@@ -10,9 +10,10 @@ class VehicleBase
 {
    public:
       static int vehicleCount;
-
-   private:
       int         vehicleID;
+
+   protected:
+      //int         vehicleID;
       VehicleType vehicleType;
       Direction   vehicleDirection;
 
