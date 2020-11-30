@@ -12,7 +12,7 @@ private:
     Section *start;
     Section *end;
     int length;
-    bool atTheEnd;
+    bool atTheEnd = false;
     bool turningRight;
 
     void moveForward();

@@ -86,9 +86,9 @@ void Simulation::runSim(){
     TrafficLight trafficLightEW(greenEW, yellowEW, greenNS + yellowNS, LightColor::red);
 
     Lane northbound(Direction::north, sectionsBeforeIntersection, &ms1, &ms2, &trafficLightNS);
+    Lane westbound(Direction::west, sectionsBeforeIntersection, &ms2, &ms3, &trafficLightEW);
     Lane southbound(Direction::south, sectionsBeforeIntersection, &ms3, &ms4, &trafficLightNS);
     Lane eastbound(Direction::east, sectionsBeforeIntersection, &ms4, &ms1, &trafficLightEW);
-    Lane westbound(Direction::west, sectionsBeforeIntersection, &ms2, &ms3, &trafficLightEW);
 
 	anim.setVehiclesNorthbound(northbound.getLaneVector());
     anim.setVehiclesWestbound(westbound.getLaneVector());
@@ -100,10 +100,10 @@ void Simulation::runSim(){
     mt.seed(seed);
 
 	for (int i = 0; i < simTime; i++){
-		createVehicle(&northbound, probNewVehicleN, rand_double(mt), rand_double(mt), rand_double(mt));
-		createVehicle(&westbound, probNewVehicleW, rand_double(mt), rand_double(mt), rand_double(mt));
-		createVehicle(&southbound, probNewVehicleS, rand_double(mt), rand_double(mt), rand_double(mt));
-		createVehicle(&eastbound, probNewVehicleE, rand_double(mt), rand_double(mt), rand_double(mt));
+		createVehicle(&northbound, &vehicleVector, probNewVehicleN, rand_double(mt), rand_double(mt), rand_double(mt));
+		createVehicle(&westbound, &vehicleVector,probNewVehicleW, rand_double(mt), rand_double(mt), rand_double(mt));
+		createVehicle(&southbound, &vehicleVector,probNewVehicleS, rand_double(mt), rand_double(mt), rand_double(mt));
+		createVehicle(&eastbound, &vehicleVector,probNewVehicleE, rand_double(mt), rand_double(mt), rand_double(mt));
 
 		anim.setLightNorthSouth(trafficLightNS.getColor());
         anim.setLightEastWest(trafficLightEW.getColor());
@@ -114,62 +114,59 @@ void Simulation::runSim(){
         anim.setVehiclesEastbound(eastbound.getLaneVector());
 
 		anim.draw(i);
+		step();
         std::cin.get(dummy);
 
-		step();
 		trafficLightNS.decrement();
         trafficLightEW.decrement();
 	}
 }
 
-void Simulation::createVehicle(Lane *lane, double laneProb, double createProb,
+void Simulation::createVehicle(Lane *lane, vector<Vehicle *> *v, double laneProb, double createProb,
 	double vehicleProb, double turnProb){
-		std::cout << lane->canCreate() << std::endl;
-		if(!lane->canCreate())
-			std::cout << "Buffer is empty?: " << lane->getBuffer()->getVehicle()->vehicleID << std::endl;
+	//std::cout << lane->canCreate() << std::endl;
 	if((lane->canCreate()) && (createProb <= laneProb)){
+		Vehicle *veh;
 		if(vehicleProb <= proportionCars){
-			Vehicle *car;
-			if(turnProb <= probRightCars){
-				car = new Vehicle(lane, VehicleType::car, true);
-				vehicleVector.push_back(car);
-			}
-			else{
-				car = new Vehicle(lane, VehicleType::car, false);
-				vehicleVector.push_back(car);
-			}
+			if(turnProb <= probRightCars)
+				veh = new Vehicle(lane, VehicleType::car, true);
+			else
+				veh = new Vehicle(lane, VehicleType::car, false);
 		}
 		else if(vehicleProb <= proportionCars + proportionSUVs){
-			Vehicle *suv;
-			if(turnProb <= probRightSUVs){
-				suv = new Vehicle(lane, VehicleType::suv, true);
-				vehicleVector.push_back(suv);
-			}
-			else{
-				suv = new Vehicle(lane, VehicleType::suv, false);
-				vehicleVector.push_back(suv);
-			}
+			if(turnProb <= probRightSUVs)
+				veh = new Vehicle(lane, VehicleType::suv, true);
+			else
+				veh = new Vehicle(lane, VehicleType::suv, false);
 		}
 		else{
-			Vehicle *truck;
-			if(turnProb <= probRightCars){
-				truck = new Vehicle(lane, VehicleType::truck, true);
-				vehicleVector.push_back(truck);
-			}
-			else{
-				truck = new Vehicle(lane, VehicleType::truck, false);
-				vehicleVector.push_back(truck);
-			}
+			if(turnProb <= probRightCars)
+				veh = new Vehicle(lane, VehicleType::truck, true);
+			else
+				veh = new Vehicle(lane, VehicleType::truck, false);
 		}
+		v->push_back(veh);
 	}
+	std::cout << "In create: ";
+		for(size_t i = 0; i < vehicleVector.size(); i++)
+			std::cout << vehicleVector[i]->getVehicleID() << ", ";
+		std::cout << endl;
 }
 
 void Simulation::step(){
+	std::cout << "In step: ";
+		for(size_t i = 0; i < vehicleVector.size(); i++)
+			std::cout << vehicleVector[i]->getVehicleID() << ", ";
+		std::cout << endl;
 	vector<int> indices;
 	for (size_t i = 0; i < vehicleVector.size(); i++){
         if (vehicleVector[i]->reachedEnd())
 			indices.push_back(i);
     }
+	std::cout << "Indices to delete: ";
+		for(size_t i = 0; i < indices.size(); i++)
+			std::cout << indices[i] << ", ";
+		std::cout << endl;
 	for(size_t i = 0; i < indices.size(); i++){
 		int index = indices[i] - i;
 		// Create a pointer to a vehicle because deletes vector's memory otherwise
@@ -177,6 +174,10 @@ void Simulation::step(){
         vehicleVector.erase(vehicleVector.begin() + index);
         delete vehiclePtr;
 	}
+	std::cout << "In step after deleting: ";
+		for(size_t i = 0; i < vehicleVector.size(); i++)
+			std::cout << vehicleVector[i]->getVehicleID() << ", ";
+		std::cout << endl;
 	for (size_t i = 0; i < vehicleVector.size(); i++){
 		vehicleVector[i]->move();
 	}
