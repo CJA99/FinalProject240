@@ -124,50 +124,63 @@ void Simulation::runSim(){
 
 void Simulation::createVehicle(Lane *lane, double laneProb, double createProb,
 	double vehicleProb, double turnProb){
-
+		std::cout << lane->canCreate() << std::endl;
+		if(!lane->canCreate())
+			std::cout << "Buffer is empty?: " << lane->getBuffer()->getVehicle()->vehicleID << std::endl;
 	if((lane->canCreate()) && (createProb <= laneProb)){
 		if(vehicleProb <= proportionCars){
 			Vehicle *car;
-			if(turnProb <= probRightCars)
+			if(turnProb <= probRightCars){
 				car = new Vehicle(lane, VehicleType::car, true);
-			else
+				vehicleVector.push_back(car);
+			}
+			else{
 				car = new Vehicle(lane, VehicleType::car, false);
-			vehicleVector.push_back(car);
+				vehicleVector.push_back(car);
+			}
 		}
 		else if(vehicleProb <= proportionCars + proportionSUVs){
 			Vehicle *suv;
-			if(turnProb <= probRightSUVs)
+			if(turnProb <= probRightSUVs){
 				suv = new Vehicle(lane, VehicleType::suv, true);
-			else
+				vehicleVector.push_back(suv);
+			}
+			else{
 				suv = new Vehicle(lane, VehicleType::suv, false);
-			vehicleVector.push_back(suv);
+				vehicleVector.push_back(suv);
+			}
 		}
 		else{
 			Vehicle *truck;
-			if(turnProb <= probRightCars)
+			if(turnProb <= probRightCars){
 				truck = new Vehicle(lane, VehicleType::truck, true);
-			else
+				vehicleVector.push_back(truck);
+			}
+			else{
 				truck = new Vehicle(lane, VehicleType::truck, false);
-			vehicleVector.push_back(truck);
+				vehicleVector.push_back(truck);
+			}
 		}
 	}
 }
 
 void Simulation::step(){
-	std::cout << "idddees: ";
+	vector<int> indices;
 	for (size_t i = 0; i < vehicleVector.size(); i++){
-		std::cout << vehicleVector[i]->vehicleID << ", ";
-        if (vehicleVector[i]->reachedEnd()){
-			std::cout << "deleting " << vehicleVector[i]->vehicleID << std::endl;
-			// Create a pointer to a vehicle because deletes vector's memory otherwise
-            Vehicle* vehiclePtr = vehicleVector[i];
-            vehicleVector.erase(vehicleVector.begin() + i);
-            delete vehiclePtr;
-        }
+        if (vehicleVector[i]->reachedEnd())
+			indices.push_back(i);
     }
-	std::cout << std::endl;
-	for (size_t i = 0; i < vehicleVector.size(); i++)
+	for(size_t i = 0; i < indices.size(); i++){
+		int index = indices[i] - i;
+		// Create a pointer to a vehicle because deletes vector's memory otherwise
+        Vehicle* vehiclePtr = vehicleVector[index];
+        vehicleVector.erase(vehicleVector.begin() + index);
+        delete vehiclePtr;
+	}
+	for (size_t i = 0; i < vehicleVector.size(); i++){
 		vehicleVector[i]->move();
+	}
+
 }
 
 #endif

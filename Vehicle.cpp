@@ -25,8 +25,8 @@ Vehicle::Vehicle(Lane *spawnLane, VehicleType type, bool willTurn) : VehicleBase
 }
 
 void Vehicle::move(){
-    //std::cout << this->vehicleID << std::endl;
-    if((!start->getNext()->isEmpty()))
+    //ystd::cout << "move" << std::endl;
+    if(!(start->getNext()->isEmpty()))
         return;
     if(start->getNext()->isMiddle() && !(start->isMiddle())){
         if (lane->getTrafficLight()->getColor() == LightColor::red)
@@ -39,14 +39,12 @@ void Vehicle::move(){
 
     if(start->getNext() == nullptr){
         atTheEnd = true;
-        //std::cout << vehicleID << " is at the end"<< std::endl;
         Section *sec = start;
         while(sec != end){
             sec->setEmpty();
             sec = sec->getPrev();
         }
         end->setEmpty();
-        //std::cout << vehicleID << " nice " << reachedEnd() << std::endl;
     }
 }
 
