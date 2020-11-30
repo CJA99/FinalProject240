@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
+
 int Probability::maximum_simulated_time;
 int Probability::number_of_sections_before_intersection;
 int Probability::green_north_south;

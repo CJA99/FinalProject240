@@ -8,13 +8,15 @@
 class Vehicle : public VehicleBase{
 private:
     Lane *lane;
-    bool atTheEnd;
 
     Section *start;
     Section *end;
     int length;
-
+    bool atTheEnd;
     bool turningRight;
+
+    void moveForward();
+    void turnRight();
 
 public:
     Vehicle(Lane *spawnLane, VehicleType type, bool willTurn);

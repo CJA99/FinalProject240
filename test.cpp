@@ -18,77 +18,71 @@ int main()
     MiddleSection ms3;
     MiddleSection ms4;
 
-
-    // std::vector<VehicleBase*> westbound(halfSize * 2 + 2, nullptr);
-    // std::vector<VehicleBase*> eastbound(halfSize * 2 + 2, nullptr);
-    // std::vector<VehicleBase*> southbound(halfSize * 2 + 2, nullptr);
-    // std::vector<VehicleBase*> northbound(halfSize * 2 + 2, nullptr);
-
-    //VehicleBase vb1(VehicleType::car, Direction::east);
-    VehicleBase vb2(VehicleType::car, Direction::west);
-    VehicleBase vb3(VehicleType::car, Direction::north);
-
     char dummy;
 
     //anim.setLightNorthSouth(LightColor::red);
     //anim.setLightEastWest(LightColor::green);
 
-    TrafficLight NS{5, 5, 5, "Green"};
-    TrafficLight EW{5, 5, 5, "Red"};
+    TrafficLight lightNS{5, 2, 7, LightColor::red};
+    TrafficLight lightEW{5, 2, 7, LightColor::green};
 
-    Lane northbound(Direction::north, halfSize, &ms1, &ms2, NS);
-    Lane southbound(Direction::south, halfSize, &ms3, &ms4, EW);
-    Lane eastbound(Direction::east, halfSize, &ms4, &ms1, EW);
-    Lane westbound(Direction::west, halfSize, &ms2, &ms3, NS);
+    Lane northbound(Direction::north, halfSize, &ms1, &ms2, &lightNS);
+    Lane southbound(Direction::south, halfSize, &ms3, &ms4, &lightNS);
+    Lane eastbound(Direction::east, halfSize, &ms4, &ms1, &lightEW);
+    Lane westbound(Direction::west, halfSize, &ms2, &ms3, &lightEW);
 
     //anim.setLightNorthSouth(LightColor::green);
     //anim.setLightEastWest(LightColor::red);
 
-    if (NS.getColor() == "Green"){
-	anim.setLightNorthSouth(LightColor::green);
-	anim.setLightEastWest(LightColor::red);
-    }
-
-    //Vehicle car1(&westbound, VehicleType::car, false);
-    Vehicle suv1(&southbound, VehicleType::car, false);
-
-    for (size_t i = 0; i < 20; i++)
-    {
-        //car1.move();
-        suv1.move();
-        /* code */
     anim.setVehiclesNorthbound(northbound.getLaneVector());
     anim.setVehiclesWestbound(westbound.getLaneVector());
     anim.setVehiclesSouthbound(southbound.getLaneVector());
     anim.setVehiclesEastbound(eastbound.getLaneVector());
 
-    anim.draw(i);
+    Vehicle *car1 = new Vehicle(&westbound, VehicleType::truck, false);
+    Vehicle car2(&southbound, VehicleType::car, false);
 
-    std::cin.get(dummy);
+    for (size_t i = 0; i < 1000; i++){
+
+        anim.setLightNorthSouth(lightNS.getColor());
+        anim.setLightEastWest(lightEW.getColor());
+
+
+        anim.setVehiclesNorthbound(northbound.getLaneVector());
+        anim.setVehiclesWestbound(westbound.getLaneVector());
+        anim.setVehiclesSouthbound(southbound.getLaneVector());
+        anim.setVehiclesEastbound(eastbound.getLaneVector());
+
+        anim.draw(i);
+        std::cin.get(dummy);
+
+        if(car1->reachedEnd()){
+            delete car1;
+        }else
+            car1->move();
+        //car2.move();
+        lightNS.decrement();
+        lightEW.decrement();
     }
 
-    // southbound.assign(halfSize * 2 + 2, nullptr); // reset vector
-    // northbound.assign(halfSize * 2 + 2, nullptr); // reset
-    // eastbound.assign(halfSize * 2 + 2, nullptr); // reset
-    // westbound.assign(halfSize * 2 + 2, nullptr); // reset
+    // Vehicle suv1(&southbound, VehicleType::car, false);
+
+    // for (size_t i = 0; i < 200; i++){
+
+    //     anim.setLightNorthSouth(lightNS.getColor());
+    //     anim.setLightEastWest(lightEW.getColor());
 
 
+    //     anim.setVehiclesNorthbound(northbound.getLaneVector());
+    //     anim.setVehiclesWestbound(westbound.getLaneVector());
+    //     anim.setVehiclesSouthbound(southbound.getLaneVector());
+    //     anim.setVehiclesEastbound(eastbound.getLaneVector());
 
-    // southbound[6] = southbound[7] = &vb1;
-    // westbound[1] = westbound[2] = &vb2;
-    // //northbound[4] = northbound[5] = &vb3;
+    //     anim.draw(i);
+    //     std::cin.get(dummy);
 
-    // anim.setVehiclesNorthbound(northbound);
-    // anim.setVehiclesWestbound(westbound);
-    // anim.setVehiclesSouthbound(southbound);
-    // anim.setVehiclesEastbound(eastbound);
-
-    // anim.draw(1);
-
-    // std::cin.get(dummy);
-
-    // //southbound.assign(halfSize * 2 + 2, nullptr); // reset vector
-    // //northbound.assign(halfSize * 2 + 2, nullptr); // reset
-    // eastbound.assign(halfSize * 2 + 2, nullptr); // reset
-    // westbound.assign(halfSize * 2 + 2, nullptr); // reset
+    //     suv1.move();
+    //     lightNS.decrement();
+    //     lightEW.decrement();
+    // }
 }

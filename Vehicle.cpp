@@ -25,9 +25,25 @@ Vehicle::Vehicle(Lane *spawnLane, VehicleType type, bool willTurn) : VehicleBase
 }
 
 void Vehicle::move(){
+    if((!start->getNext()->isEmpty()))
+        return;
+    if ((start->getNext()->isMiddle() && lane->getTrafficLight()->getColor() == LightColor::red))
+        return;
+    moveForward();
+
+    if(start->getNext() == nullptr){
+        atTheEnd = true;
+    }
+}
+
+void Vehicle::moveForward(){
     start = start->getNext();
     start->setVehicle(this);
     end = end->getNext();
     end->getPrev()->setEmpty();
+}
+
+void Vehicle::turnRight(){
+
 }
 #endif

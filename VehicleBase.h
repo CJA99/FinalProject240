@@ -25,6 +25,7 @@ class VehicleBase
 
       inline VehicleType getVehicleType() const { return this->vehicleType; }
       inline Direction   getVehicleOriginalDirection() const { return this->vehicleDirection; }
+      void changeDirection(Direction dir);
 };
 
 #endif

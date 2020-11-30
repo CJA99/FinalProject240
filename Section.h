@@ -13,7 +13,7 @@ private:
     bool empty;                         // Section is empty
 
 protected:
-    bool toBeDeleted = true;            // Sections should be deleted, middle sections not
+    bool middle = false;            // Sections should be deleted, middle sections not
 
 public:
     Section();
@@ -22,7 +22,7 @@ public:
     // Get methods
     virtual inline Section *getNext(){ return next; }   // get next Section
     virtual inline Section *getPrev(){ return prev; }   // get previous Section
-    virtual inline bool shouldDelete(){ return toBeDeleted; }
+    virtual inline bool isMiddle(){ return middle; }
 
     inline bool isEmpty(){ return empty; }              // Section is empty
     inline VehicleBase *getVehicle(){ return vehicle; } // Get VehicleBase on this Section

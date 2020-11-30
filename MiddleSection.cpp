@@ -5,7 +5,7 @@
 using namespace std;
 
 // Default constructor
-MiddleSection::MiddleSection():Section(){ toBeDeleted = false; }
+MiddleSection::MiddleSection():Section(){ middle = true; }
 
 
 // Get next section dependent on direction

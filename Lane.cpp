@@ -5,7 +5,7 @@
 
 // Default constructor creates a lane by linking sections
 Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
-    MiddleSection *middleSection2, TrafficLight light){
+    MiddleSection *middleSection2, TrafficLight *light){
     trafficLight = light;
     length = 2 + halfSize * 2;
     this->direction = direction;
@@ -83,7 +83,7 @@ Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
 // Destructor deallocates every section except middle ones
 Lane::~Lane(){
     for (size_t i = 0; i < lane.size(); i++){
-        if (lane[i]->shouldDelete())
+        if (!lane[i]->isMiddle())
             delete this->lane[i];
     }
     lane.clear();
