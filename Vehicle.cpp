@@ -1,6 +1,7 @@
 #ifndef __VEHICLE_CPP__
 #define __VEHICLE_CPP__
 
+#include "MiddleSection.h"
 #include "Vehicle.h"
 #include <iostream>
 
@@ -34,6 +35,9 @@ void Vehicle::move(){
         if (lane->getTrafficLight()->getColor() == LightColor::yellow && !(lane->getTrafficLight()->changeTime() >= length + 2)){
             return;
         }
+	if(turningRight){
+	    turnRight();
+	}
     }
     moveForward();
 
@@ -56,6 +60,10 @@ void Vehicle::moveForward(){
 }
 
 void Vehicle::turnRight(){
-
+    //start = lane->getMiddleSection1()->getRight();
+    //start->setVehicle(this);
+    //end = end->getNext();
+    //end->getPrev()->setEmpty();
+    //moveForward(); 
 }
 #endif
