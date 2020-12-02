@@ -24,5 +24,6 @@ public:
 
     void move();
     inline bool reachedEnd(){ return atTheEnd; }
+    inline bool willTurn(){ return turningRight; }
 };
 #endif

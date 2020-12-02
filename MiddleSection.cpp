@@ -2,6 +2,7 @@
 #define __MIDDLESECTION_CPP__
 
 #include "MiddleSection.h"
+#include "Vehicle.h"
 using namespace std;
 
 // Default constructor
@@ -29,16 +30,30 @@ Section *MiddleSection::getPrev(){
     if(getVehicle() == nullptr)
         return Section::getPrev();
 
-    Direction direction = getVehicle()->getVehicleOriginalDirection();
-    if(direction == Direction::north)
-        return south;
-    else if(direction == Direction::east)
-        return west;
-    else if(direction == Direction::west)
-        return east;
-    else if(direction == Direction::south)
-        return north;
+    Vehicle *veh = dynamic_cast<Vehicle *>(getVehicle());
+    Direction direction = veh->getVehicleOriginalDirection();
+    // if(veh->willTurn()){
+    //     if(direction == Direction::north)
+    //         return east;
+    //     else if(direction == Direction::east)
+    //         return south;
+    //     else if(direction == Direction::west)
+    //         return north;
+    //     else if(direction == Direction::south)
+    //         return west;
+    // }
+    // else{
+        if(direction == Direction::north)
+            return south;
+        else if(direction == Direction::east)
+            return west;
+        else if(direction == Direction::west)
+            return east;
+        else if(direction == Direction::south)
+            return north;
+    //}
     return nullptr;
+
 }
 
 // Get right section dependent on direction

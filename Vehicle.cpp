@@ -25,18 +25,25 @@ Vehicle::Vehicle(Lane *spawnLane, VehicleType type, bool willTurn) : VehicleBase
 }
 
 void Vehicle::move(){
-    //ystd::cout << "move" << std::endl;
     if(!(start->getNext()->isEmpty()))
         return;
     if(start->getNext()->isMiddle() && !(start->isMiddle())){
-        if (lane->getTrafficLight()->getColor() == LightColor::red)
+        std::cout << "1" << std::endl;
+        if(lane->getTrafficLight()->getColor() == LightColor::red){
+            std::cout << "2" << std::endl;
             return;
-        if (lane->getTrafficLight()->getColor() == LightColor::yellow && !(lane->getTrafficLight()->changeTime() >= length + 2)){
+        }
+        if(lane->getTrafficLight()->getColor() == LightColor::yellow && !(lane->getTrafficLight()->changeTime() >= length + 2)){
+            std::cout << "3" << std::endl;
             return;
         }
     }
-    moveForward();
-
+    else if(start->getNext()->isMiddle() && start->isMiddle() && turningRight){
+        std::cout << "4" << std::endl;
+        turnRight();
+        return;
+    }
+        moveForward();
     if(start->getNext() == nullptr){
         atTheEnd = true;
         Section *sec = start;
@@ -56,6 +63,18 @@ void Vehicle::moveForward(){
 }
 
 void Vehicle::turnRight(){
-
+    MiddleSection *ms = dynamic_cast<MiddleSection *>(start);
+    start = ms->getRight();
+    start->setVehicle(this);
+    end = end->getNext();
+    end->getPrev()->setEmpty();
+    if(getVehicleOriginalDirection() == Direction::east)
+        changeDirection(Direction::south);
+    if(getVehicleOriginalDirection() == Direction::north)
+        changeDirection(Direction::east);
+    if(getVehicleOriginalDirection() == Direction::west)
+        changeDirection(Direction::north);
+    if(getVehicleOriginalDirection() == Direction::south)
+        changeDirection(Direction::west);
 }
 #endif

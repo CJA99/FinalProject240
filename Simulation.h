@@ -37,7 +37,7 @@ private:
     double probLeftSUVs;               // Probability a SUV turns left
     double probLeftTrucks;             // Probability a truck turns left
 
-    void createVehicle(Lane *lane, vector<Vehicle *> *v, double laneProb, double createProb,
+    void createVehicle(Lane *lane, double laneProb, double createProb,
         double vehicleProb, double turnProb);
     void step();
 

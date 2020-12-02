@@ -20,7 +20,7 @@ class VehicleBase
    public:
       VehicleBase(VehicleType type, Direction originalDirection);
       VehicleBase(const VehicleBase& other);
-      ~VehicleBase();
+      virtual ~VehicleBase();
 
       inline int getVehicleID() const { return this->vehicleID; }
 
