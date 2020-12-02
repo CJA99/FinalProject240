@@ -15,6 +15,7 @@ Simulation::Simulation(string file, int seed){
 
     if(!infile){
         cerr << "Error: could not open file: " << file << endl;
+		exit(1);
 	}
 
 	int count{};
@@ -114,8 +115,9 @@ void Simulation::runSim(){
         anim.setVehiclesEastbound(eastbound.getLaneVector());
 
 		anim.draw(i);
-		step();
+
         std::cin.get(dummy);
+		step();
 
 		trafficLightNS.decrement();
         trafficLightEW.decrement();

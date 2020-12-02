@@ -38,16 +38,17 @@ void Vehicle::move(){
             std::cout << "3" << std::endl;
             return;
         }
-	if(turningRight){
-	    turnRight();
-	}
+	// if(turningRight){
+	//     turnRight();
+	// }
     }
-    else if(start->getNext()->isMiddle() && start->isMiddle() && turningRight){
+    if(start->getNext()->isMiddle() && start->isMiddle() && turningRight){
         std::cout << "4" << std::endl;
         turnRight();
         return;
     }
         moveForward();
+
     if(start->getNext() == nullptr){
         atTheEnd = true;
         Section *sec = start;
@@ -70,15 +71,15 @@ void Vehicle::turnRight(){
     MiddleSection *ms = dynamic_cast<MiddleSection *>(start);
     start = ms->getRight();
     start->setVehicle(this);
+    end->setEmpty();
     end = end->getNext();
-    end->getPrev()->setEmpty();
     if(getVehicleOriginalDirection() == Direction::east)
         changeDirection(Direction::south);
-    if(getVehicleOriginalDirection() == Direction::north)
+    else if(getVehicleOriginalDirection() == Direction::north)
         changeDirection(Direction::east);
-    if(getVehicleOriginalDirection() == Direction::west)
+    else if(getVehicleOriginalDirection() == Direction::west)
         changeDirection(Direction::north);
-    if(getVehicleOriginalDirection() == Direction::south)
+    else if(getVehicleOriginalDirection() == Direction::south)
         changeDirection(Direction::west);
 }
 #endif

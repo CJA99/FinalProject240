@@ -32,17 +32,17 @@ Section *MiddleSection::getPrev(){
 
     Vehicle *veh = dynamic_cast<Vehicle *>(getVehicle());
     Direction direction = veh->getVehicleOriginalDirection();
-    // if(veh->willTurn()){
-    //     if(direction == Direction::north)
-    //         return east;
-    //     else if(direction == Direction::east)
-    //         return south;
-    //     else if(direction == Direction::west)
-    //         return north;
-    //     else if(direction == Direction::south)
-    //         return west;
-    // }
-    // else{
+    if(veh->willTurn()){
+        if(direction == Direction::north)
+            return east;
+        else if(direction == Direction::east)
+            return south;
+        else if(direction == Direction::west)
+            return north;
+        else if(direction == Direction::south)
+            return west;
+    }
+    else{
         if(direction == Direction::north)
             return south;
         else if(direction == Direction::east)
@@ -51,7 +51,7 @@ Section *MiddleSection::getPrev(){
             return east;
         else if(direction == Direction::south)
             return north;
-    //}
+    }
     return nullptr;
 
 }
