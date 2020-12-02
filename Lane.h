@@ -15,6 +15,7 @@ private:
     Direction direction;    // Direction of a lane
     Section *buffer;        // First section of a buffer where, vehicle spawns
     TrafficLight *trafficLight;
+    MiddleSection *MS1;
 
 public:
     // Constructor
@@ -30,6 +31,7 @@ public:
     inline Direction getDirection(){ return direction; } // Returns the direction associated with the Lane
     bool canCreate();                                    // Returns whether there it is possible to create a new Vehicle
     inline TrafficLight *getTrafficLight(){ return trafficLight; }
+    inline MiddleSection *getMiddleSection1(){ return MS1; }
 };
 
 #endif

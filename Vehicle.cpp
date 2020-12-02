@@ -1,6 +1,7 @@
 #ifndef __VEHICLE_CPP__
 #define __VEHICLE_CPP__
 
+#include "MiddleSection.h"
 #include "Vehicle.h"
 #include <iostream>
 
@@ -37,6 +38,9 @@ void Vehicle::move(){
             std::cout << "3" << std::endl;
             return;
         }
+	if(turningRight){
+	    turnRight();
+	}
     }
     else if(start->getNext()->isMiddle() && start->isMiddle() && turningRight){
         std::cout << "4" << std::endl;
