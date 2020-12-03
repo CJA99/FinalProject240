@@ -16,13 +16,14 @@ protected:
     bool middle = false;            // Sections should be deleted, middle sections not
 
 public:
+    // constructor
     Section();
     virtual ~Section(){}
 
     // Get methods
     virtual inline Section *getNext(){ return next; }   // get next Section
     virtual inline Section *getPrev(){ return prev; }   // get previous Section
-    virtual inline bool isMiddle(){ return middle; }
+    virtual inline bool isMiddle(){ return middle; }    // returns true if the section is a MiddleSection
 
     inline bool isEmpty(){ return empty; }              // Section is empty
     inline VehicleBase *getVehicle(){ return vehicle; } // Get VehicleBase on this Section
