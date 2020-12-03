@@ -14,8 +14,7 @@ private:
     int length;             // Length of a lane
     Direction direction;    // Direction of a lane
     Section *buffer;        // First section of a buffer where, vehicle spawns
-    TrafficLight *trafficLight;
-    MiddleSection *MS1;
+    TrafficLight *trafficLight;  // The TrafficLight corresponding to the lane  
 
 public:
     // Constructor
@@ -30,8 +29,7 @@ public:
     inline Section *getBuffer(){ return buffer; }   // Returns the first section of a buffer
     inline Direction getDirection(){ return direction; } // Returns the direction associated with the Lane
     bool canCreate();                                    // Returns whether there it is possible to create a new Vehicle
-    inline TrafficLight *getTrafficLight(){ return trafficLight; }
-    inline MiddleSection *getMiddleSection1(){ return MS1; }
+    inline TrafficLight *getTrafficLight(){ return trafficLight; }  // Returns the TrafficLight corresponding with the current lane
 };
 
 #endif
