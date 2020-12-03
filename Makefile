@@ -7,11 +7,11 @@ OBJS = sim.o Animator.o VehicleBase.o Section.o MiddleSection.o Lane.o TrafficLi
 
 #### use next two lines for mathcs* machines:
 CC = g++
-CCFLAGS = -std=c++11 -Wall -g
+CCFLAGS = -std=c++17 -Wall -g
 
 all: $(EXECS)
 
-test: $(OBJS)
+sim: $(OBJS)
 	$(CC) $(CCFLAGS) $^ -o $@
 
 %.o: %.cpp *.h
