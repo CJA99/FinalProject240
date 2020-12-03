@@ -3,7 +3,14 @@
 
 #include "Lane.h"
 
-// Default constructor creates a lane by linking sections
+/* Default constructor creates a lane by linking sections
+ *
+   @param direction the direction which traffic flows on the lane
+   @param halfSize the amount of sections before the intersection
+   @param *middleSection1 the first middlesection
+   @param *middleSection2 the second middleSection
+   @param *light the trafficLight associated with the lane
+*/
 Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
     MiddleSection *middleSection2, TrafficLight *light){
     trafficLight = light;
@@ -91,7 +98,10 @@ Lane::~Lane(){
     lane.clear();
 }
 
-// Get a vector of VehicleBase for the Animator class
+/* Get a vector of VehicleBase for the Animator class
+ *
+ * @return returns the vector containing all Vehicles in the lane
+ * */
 vector<VehicleBase *> Lane::getLaneVector(){
     vector<VehicleBase *> laneVector(length, nullptr);
 
@@ -102,7 +112,10 @@ vector<VehicleBase *> Lane::getLaneVector(){
     return laneVector;
 }
 
-// If the buffer is empty return true
+/* If the buffer is empty return true
+ *
+ * @return returns a bool to state whether the buffer is empty
+ * */
 bool Lane::canCreate(){
     for (size_t i = 0; i < 4; i++){
         if (!lane[i]->isEmpty())
