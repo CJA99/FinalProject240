@@ -9,7 +9,10 @@ using namespace std;
 MiddleSection::MiddleSection():Section(){ middle = true; }
 
 
-// Get next section dependent on direction
+/* Get next section dependent on direction 
+ *
+ * @return returns the next section in the Lane
+ */
 Section *MiddleSection::getNext(){
     Direction direction = getVehicle()->getVehicleOriginalDirection();
     if(direction == Direction::north)
@@ -25,7 +28,10 @@ Section *MiddleSection::getNext(){
     return nullptr;
 }
 
-// Get prev section dependent on direction
+/* Get prev section dependent on direction 
+ *
+ * @return returns the previous section in the Lane
+ */
 Section *MiddleSection::getPrev(){
     if(getVehicle() == nullptr)
         return Section::getPrev();
@@ -56,7 +62,10 @@ Section *MiddleSection::getPrev(){
 
 }
 
-// Get right section dependent on direction
+/* Get right section dependent on direction 
+ *
+ * @return returns the section to the right of the MiddleSection for right turns
+ */
 Section *MiddleSection::getRight(){
     Direction direction = getVehicle()->getVehicleOriginalDirection();
     if(direction == Direction::north)
