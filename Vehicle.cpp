@@ -26,24 +26,22 @@ Vehicle::Vehicle(Lane *spawnLane, VehicleType type, bool willTurn) : VehicleBase
 }
 
 void Vehicle::move(){
-    if(!(start->getNext()->isEmpty()))
+    if(!(start->getNext()->isEmpty()) || (start->getNext() == nullptr))
         return;
     if(start->getNext()->isMiddle() && !(start->isMiddle())){
-        std::cout << "1" << std::endl;
-        if(lane->getTrafficLight()->getColor() == LightColor::red){
-            std::cout << "2" << std::endl;
+        LightColor trafficColor = lane->getTrafficLight()->getColor();
+        if(trafficColor == LightColor::red){
             return;
         }
-        if(lane->getTrafficLight()->getColor() == LightColor::yellow && !(lane->getTrafficLight()->changeTime() >= length + 2)){
-            std::cout << "3" << std::endl;
-            return;
+        else if(trafficColor == LightColor::yellow){
+            int timeTilChange = lane->getTrafficLight()->changeTime();
+            if(turningRight && (timeTilChange < length + 1))
+                return;
+            if(!turningRight && (timeTilChange < length + 2))
+                return;
         }
-	// if(turningRight){
-	//     turnRight();
-	// }
     }
     if(start->getNext()->isMiddle() && start->isMiddle() && turningRight){
-        std::cout << "4" << std::endl;
         turnRight();
         return;
     }
