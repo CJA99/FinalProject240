@@ -3,6 +3,10 @@
 
 #include "Section.h"
 
+/**
+ * MiddleSection class is a subclass of Section.
+ * It adds functionality to connect Sections in all 4 directions
+*/
 class MiddleSection : public Section{
 private:
     Section *north;     // the section to the north of the MiddleSection
@@ -11,9 +15,8 @@ private:
     Section *south;     // the section to the south of the MiddleSection
 
 public:
-    MiddleSection();                              // Default constructor
-    MiddleSection(const MiddleSection &other);    // Copy constructor
-    ~MiddleSection(){}                            // Destructor
+    MiddleSection();    // Default constructor
+    ~MiddleSection(){}  // Destructor
 
     // Get methods
     Section *getNext() override;    // Get next section dependent on direction
@@ -26,10 +29,10 @@ public:
     inline Section *getWest(){ return west; }       // returns the west Section
 
     // Set methods
-    inline void setNorth(Section *north){ this->north = north; }    // sets the north Section using *north as the parameter value it is set to 
-    inline void setEast(Section *east){ this->east = east; }        // sets the east Section using *east as the parameter value it is set to 
-    inline void setSouth(Section *south){ this->south = south; }    // sets the south Section using *south as the parameter value it is set to 
-    inline void setWest(Section *west){ this->west = west; }        // sets the west Section using *west as the parameter value it is set to 
+    inline void setNorth(Section *north){ this->north = north; }    // sets the north Section using *north
+    inline void setEast(Section *east){ this->east = east; }        // sets the east Section using *east
+    inline void setSouth(Section *south){ this->south = south; }    // sets the south Section using *south
+    inline void setWest(Section *west){ this->west = west; }        // sets the west Section using *west
 };
 
 #endif

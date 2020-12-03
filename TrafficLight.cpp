@@ -6,7 +6,9 @@
 
 using namespace std;
 
-// Default constructor
+/**
+ * Default constructor
+ */
 TrafficLight::TrafficLight(){
     green = 0;
     yellow = 0;
@@ -15,7 +17,16 @@ TrafficLight::TrafficLight(){
     color = LightColor::red;
 }
 
+/**
+ * Typical use constructor
+ * @param gLight green light time
+ * @param yLight yellow light time
+ * @param rLight red light time
+ * @param color initial color
+ */
 TrafficLight::TrafficLight(int gLight, int yLight, int rLight, LightColor color){
+
+    // Member initilization
     green = gLight;
     yellow = yLight;
     red = rLight;
@@ -28,6 +39,9 @@ TrafficLight::TrafficLight(int gLight, int yLight, int rLight, LightColor color)
         countDown = red;
 }
 
+/**
+ * Decrement time on the trafficLight
+ */
 void TrafficLight::decrement(){
     countDown--;
     if(countDown == 0){

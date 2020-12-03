@@ -9,8 +9,8 @@ using namespace std;
 MiddleSection::MiddleSection():Section(){ middle = true; }
 
 
-/* Get next section dependent on direction 
- *
+/**
+ * Get next section dependent on direction
  * @return returns the next section in the Lane
  */
 Section *MiddleSection::getNext(){
@@ -28,8 +28,8 @@ Section *MiddleSection::getNext(){
     return nullptr;
 }
 
-/* Get prev section dependent on direction 
- *
+/**
+ * Get prev section dependent on direction
  * @return returns the previous section in the Lane
  */
 Section *MiddleSection::getPrev(){
@@ -38,6 +38,8 @@ Section *MiddleSection::getPrev(){
 
     Vehicle *veh = dynamic_cast<Vehicle *>(getVehicle());
     Direction direction = veh->getVehicleOriginalDirection();
+
+    // If a vehicle is turning return sections from previous direction
     if(veh->willTurn()){
         if(direction == Direction::north)
             return east;
@@ -62,9 +64,9 @@ Section *MiddleSection::getPrev(){
 
 }
 
-/* Get right section dependent on direction 
- *
- * @return returns the section to the right of the MiddleSection for right turns
+/**
+ * Get right section dependent on direction
+ * @return the section to the right of the MiddleSection for right turns
  */
 Section *MiddleSection::getRight(){
     Direction direction = getVehicle()->getVehicleOriginalDirection();

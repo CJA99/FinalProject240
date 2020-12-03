@@ -10,7 +10,6 @@ class VehicleBase
 {
    public:
       static int vehicleCount;
-      //int         vehicleID;
 
    protected:
       int         vehicleID;
@@ -26,7 +25,9 @@ class VehicleBase
 
       inline VehicleType getVehicleType() const { return this->vehicleType; }
       inline Direction   getVehicleOriginalDirection() const { return this->vehicleDirection; }
-      void changeDirection(Direction dir);
+
+      // Change the current direction of a vehicle, needed for turns
+      inline void changeDirection(Direction dir) { vehicleDirection = dir; }
 };
 
 #endif

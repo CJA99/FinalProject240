@@ -3,7 +3,7 @@ OBJS = sim.o Animator.o VehicleBase.o Section.o MiddleSection.o Lane.o TrafficLi
 
 #### use next two lines for Mac
 # CC = clang++
-# CCFLAGS = -std=c++11 -stdlib=libc++
+# CCFLAGS = -std=c++17 -stdlib=libc++
 
 #### use next two lines for mathcs* machines:
 CC = g++

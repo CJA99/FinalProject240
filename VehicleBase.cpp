@@ -19,6 +19,4 @@ VehicleBase::VehicleBase(const VehicleBase& other)
 
 VehicleBase::~VehicleBase() {}
 
-void VehicleBase::changeDirection(Direction dir) { vehicleDirection = dir; }
-
 #endif

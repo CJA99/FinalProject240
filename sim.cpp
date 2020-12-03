@@ -13,17 +13,16 @@ int main(int argc, char* argv[]) {
 
     if(argc < 3){
         cerr << "Usage: ./sim [input file] [initial seed]" << endl;
+        exit(1);
     }
 
     ifstream infile(argv[1]);
-
     if (!infile){
         cerr << "Error: could not open file: " << argv[1] << endl;
         exit(1);
     }
 
     int seed;
-
     try{
         seed = stoi(argv[2]);
     }catch(exception& e){
@@ -31,6 +30,7 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
+    // Rin simulation
     Simulation sim(argv[1], seed);
     sim.runSim();
 

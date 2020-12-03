@@ -8,7 +8,8 @@
 
 using namespace std;
 
-/* this is the contructor method which passes an input file to determine elements of the simulation
+/**
+ * Typical use contructor which passes an input file to determine elements of the simulation
  * and a seed to generate random numbers
  *
  * @param file the input file which is read in the constructor
@@ -28,7 +29,7 @@ Simulation::Simulation(string file, int seed){
 	string name;
 	string value;
 
-	// while loop that reads the input file and stores variables 
+	// while loop that reads the input file and stores variables
 	while (infile.good()){
 		count++;
 		infile >> name >> value;
@@ -74,68 +75,88 @@ Simulation::Simulation(string file, int seed){
 	proportionTrucks = 1 - proportionCars - proportionSUVs;
 }
 
-// destructor which deletes vehicleVector
+/**
+ * Destructor deletes every vehicle in the system
+ */
 Simulation::~Simulation(){
 	for (size_t i = 0; i < vehicleVector.size(); i++)
       delete vehicleVector[i];
 	vehicleVector.clear();
 }
 
-// this method creates all the necessary parts of the simulation and animates them accordingly 
+/**
+ *  Start and animate the simulation
+ */
 void Simulation::runSim(){
 	char dummy;
 
+	// Set up animator
 	Animator anim(sectionsBeforeIntersection);
 
+	// Create middleSections
     MiddleSection ms1;
     MiddleSection ms2;
     MiddleSection ms3;
     MiddleSection ms4;
 
+	// Create trafficLights
 	TrafficLight trafficLightNS(greenNS, yellowNS, greenEW + yellowEW, LightColor::green);
     TrafficLight trafficLightEW(greenEW, yellowEW, greenNS + yellowNS, LightColor::red);
 
+	// Create 4 lanes
     Lane northbound(Direction::north, sectionsBeforeIntersection, &ms1, &ms2, &trafficLightNS);
     Lane westbound(Direction::west, sectionsBeforeIntersection, &ms2, &ms3, &trafficLightEW);
     Lane southbound(Direction::south, sectionsBeforeIntersection, &ms3, &ms4, &trafficLightNS);
     Lane eastbound(Direction::east, sectionsBeforeIntersection, &ms4, &ms1, &trafficLightEW);
 
+	// Set up empty lanes
 	anim.setVehiclesNorthbound(northbound.getLaneVector());
     anim.setVehiclesWestbound(westbound.getLaneVector());
     anim.setVehiclesSouthbound(southbound.getLaneVector());
     anim.setVehiclesEastbound(eastbound.getLaneVector());
 
+	// Create random number generator
     std::mt19937 mt;
     std::uniform_real_distribution<double> rand_double(0,1);
     mt.seed(seed);
 
-	for (int i = 0; i < simTime; i++){
+	// Simulation loop
+	for (int i = 0; i <= simTime; i++){
+
+		// Create vehicles on 4 lanes
 		createVehicle(&northbound, probNewVehicleN, rand_double(mt), rand_double(mt), rand_double(mt));
 		createVehicle(&westbound, probNewVehicleW, rand_double(mt), rand_double(mt), rand_double(mt));
 		createVehicle(&southbound, probNewVehicleS, rand_double(mt), rand_double(mt), rand_double(mt));
 		createVehicle(&eastbound, probNewVehicleE, rand_double(mt), rand_double(mt), rand_double(mt));
 
+		// Set trafficLight color
 		anim.setLightNorthSouth(trafficLightNS.getColor());
         anim.setLightEastWest(trafficLightEW.getColor());
 
+		// Set up lanes with animator
 		anim.setVehiclesNorthbound(northbound.getLaneVector());
         anim.setVehiclesWestbound(westbound.getLaneVector());
         anim.setVehiclesSouthbound(southbound.getLaneVector());
         anim.setVehiclesEastbound(eastbound.getLaneVector());
 
+		// Draw timer
 		anim.draw(i);
 
+		// Wait for a button to be pressed
         std::cin.get(dummy);
+
+		// Move traffic
 		step();
 
+		// Decrement time on trafficLights
 		trafficLightNS.decrement();
         trafficLightEW.decrement();
 	}
 }
 
-/* Spawns a Vehicle
- *
- * @param *lane the lane in which the Vehicle will spawn
+/**
+ * Create a vehicle on a lane if there is place
+ * @param lane pointer to the lane where the Vehicle will be spawned
  * @param laneProb the probability that a vehicle will spawn in a particular lane
  * @param createProb the probability that a vehicle will be created
  * @param vehicleProb the probability of the vehicle being a Car, SUV or Truck
@@ -143,37 +164,54 @@ void Simulation::runSim(){
  */
 void Simulation::createVehicle(Lane *lane, double laneProb, double createProb,
 	double vehicleProb, double turnProb){
+
+	// If it is possible to create a vehicle and probability is correct
 	if((lane->canCreate()) && (createProb <= laneProb)){
 		Vehicle *veh;
+
+		// Create a car
 		if(vehicleProb <= proportionCars){
 			if(turnProb <= probRightCars)
 				veh = new Vehicle(lane, VehicleType::car, true);
 			else
 				veh = new Vehicle(lane, VehicleType::car, false);
 		}
+
+		// Create a SUV
 		else if(vehicleProb <= proportionCars + proportionSUVs){
 			if(turnProb <= probRightSUVs)
 				veh = new Vehicle(lane, VehicleType::suv, true);
 			else
 				veh = new Vehicle(lane, VehicleType::suv, false);
 		}
+
+		// Create a truck
 		else{
 			if(turnProb <= probRightCars)
 				veh = new Vehicle(lane, VehicleType::truck, true);
 			else
 				veh = new Vehicle(lane, VehicleType::truck, false);
 		}
+
+		// Push created vehicle into vehicleVector
 		vehicleVector.push_back(veh);
 	}
 }
 
-//this method steps through the simulation moving the vehicles
+/**
+ * Move traffic exactly by one section
+ */
 void Simulation::step(){
+
+	// Find indices of vehicles needed to be deallocated
+	// It is needed if two consecutives vehicles will be deleted
 	vector<int> indices;
 	for (size_t i = 0; i < vehicleVector.size(); i++){
         if (vehicleVector[i]->reachedEnd())
 			indices.push_back(i);
     }
+
+	// Deallocate vehicles at correct indices
 	for(size_t i = 0; i < indices.size(); i++){
 		int index = indices[i] - i;
 		// Create a pointer to a vehicle because deletes vector's memory otherwise
@@ -181,10 +219,10 @@ void Simulation::step(){
         vehicleVector.erase(vehicleVector.begin() + index);
         delete vehiclePtr;
 	}
-	for (size_t i = 0; i < vehicleVector.size(); i++){
-		vehicleVector[i]->move();
-	}
 
+	// Move every vehicle in the system
+	for (size_t i = 0; i < vehicleVector.size(); i++)
+		vehicleVector[i]->move();
 }
 
 #endif

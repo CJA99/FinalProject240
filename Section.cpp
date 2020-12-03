@@ -4,20 +4,26 @@
 #include "Section.h"
 using namespace std;
 
-// Default constructor
+/**
+ * Default constructor
+*/
 Section::Section(){
     empty = true;
     setNext(nullptr);
     setPrev(nullptr);
 }
 
-// removes a vehicle from a Section
+/**
+ * Remove a vehicle from this section
+*/
 void Section::setEmpty(){
     empty = true;
     this->vehicle = nullptr;
 }
 
-// Sets a vehicle to be placed in a particular section
+/**
+ * Place a vehicle on this section
+*/
 void Section::setVehicle(VehicleBase *vehicle){
     empty = false;
     this->vehicle = vehicle;

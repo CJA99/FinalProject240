@@ -4,6 +4,11 @@
 #include <string>
 #include "VehicleBase.h"
 
+/**
+ * Section is a node class needed to construct a lane.
+ * It has pointers to next and precious sections and a pointer to a vehicle
+ * standing on it.
+*/
 class Section{
 private:
     Section *next;      // Next Section
@@ -13,10 +18,10 @@ private:
     bool empty;                         // Section is empty
 
 protected:
-    bool middle = false;            // Sections should be deleted, middle sections not
+    bool middle = false;    // Sections should be deleted, middle sections not
 
 public:
-    // constructor
+    // Constructor
     Section();
     virtual ~Section(){}
 

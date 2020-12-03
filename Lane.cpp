@@ -3,26 +3,45 @@
 
 #include "Lane.h"
 
-/* Default constructor creates a lane by linking sections
- *
-   @param direction the direction which traffic flows on the lane
-   @param halfSize the amount of sections before the intersection
-   @param *middleSection1 the first middlesection
-   @param *middleSection2 the second middleSection
-   @param *light the trafficLight associated with the lane
+/**
+ * Helper method to link sections
+ * @param numOfSections number of sections to be connected
+ * @param lastSection a pointer to the last section to connect to
+ * @return a pointer to the last section
+*/
+Section* Lane::linkSections(int numOfSections, Section *lastSection){
+    for (int i = 0; i < numOfSections; i++){
+        Section *section = new Section();
+        section->setPrev(lastSection);
+        lastSection->setNext(section);
+        lastSection = section;
+        lane.push_back(section);
+    }
+    return lastSection;
+}
+
+
+/**
+ * Typical use constructor creates a lane by linking sections
+ * @param direction the direction which traffic flows on the lane
+ * @param halfSize the amount of sections before the intersection
+ * @param middleSection1 a pointer to the first middlesection
+ * @param middleSection2 a pointer to the second middleSection
+ * @param light a pointer to the trafficLight associated with the lane
 */
 Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
     MiddleSection *middleSection2, TrafficLight *light){
+    // Member initialization
     trafficLight = light;
-    length = 2 + halfSize * 2;
+    length = 2 + halfSize * 2;      // 2 middleSections and sections on both sides
     this->direction = direction;
-    Section *lastSection = nullptr;
 
-    // Link first half of sections
-    for (int i = 0; i < halfSize + 4; i++){
+    // Link 4 sections of a buffer
+    Section *lastSection = nullptr;
+    for (int i = 0; i < 4; i++){
         Section *section = new Section();
 
-    // First section of the buffer
+        // Set the buffer section, where vehicles will spawn
         if (i == 3)
             buffer = section;
 
@@ -30,10 +49,12 @@ Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
             section->setPrev(lastSection);
             lastSection->setNext(section);
         }
-
         lastSection = section;
         lane.push_back(section);
     }
+
+    // Link first half of sections before the intersections
+    lastSection = linkSections(halfSize, lastSection);
 
     // Add middle sections to the vector of all sections
     lane.push_back(middleSection1);
@@ -42,6 +63,7 @@ Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
     lastSection->setNext(middleSection1);
     middleSection1->setPrev(lastSection);
 
+    // Create a section right after the intersection
     Section *startOfSecondHalf = new Section();
 
     // Link North East West South for middle sections based on the direction
@@ -73,20 +95,8 @@ Lane::Lane(Direction direction, int halfSize, MiddleSection *middleSection1,
     startOfSecondHalf->setPrev(middleSection2);
     lastSection = startOfSecondHalf;
 
-    //MS1 = middleSection1;
-
     // Link the second half and the end buffer
-    for (int i = 0; i < halfSize + 3; i++){
-        Section *section = new Section();
-
-        if (lastSection != nullptr){
-            section->setPrev(lastSection);
-            lastSection->setNext(section);
-        }
-
-        lastSection = section;
-        lane.push_back(section);
-    }
+    linkSections(halfSize + 4, lastSection);
 }
 
 // Destructor deallocates every section except middle ones
@@ -98,13 +108,14 @@ Lane::~Lane(){
     lane.clear();
 }
 
-/* Get a vector of VehicleBase for the Animator class
- *
- * @return returns the vector containing all Vehicles in the lane
- * */
+/**
+ * Get a vector of VehicleBase references for the Animator class
+ * @return the vector containing all Vehicles in the lane
+ */
 vector<VehicleBase *> Lane::getLaneVector(){
     vector<VehicleBase *> laneVector(length, nullptr);
 
+    // Take buffer sections into account
     for (int i = 0; i < length; i++){
         if (!lane[i + 4]->isEmpty())
             laneVector[i] = lane[i + 4]->getVehicle();
@@ -112,10 +123,10 @@ vector<VehicleBase *> Lane::getLaneVector(){
     return laneVector;
 }
 
-/* If the buffer is empty return true
- *
- * @return returns a bool to state whether the buffer is empty
- * */
+/**
+ * If the buffer is empty return true
+ * @return returns a bool to state whether it is possible to create a vehicle
+ */
 bool Lane::canCreate(){
     for (size_t i = 0; i < 4; i++){
         if (!lane[i]->isEmpty())
