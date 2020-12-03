@@ -11,13 +11,13 @@ Section::Section(){
     setPrev(nullptr);
 }
 
-// No more vehicle on this Section
+// removes a vehicle from a Section
 void Section::setEmpty(){
     empty = true;
     this->vehicle = nullptr;
 }
 
-// Makes a section occupied with a vehicle on it
+// Sets a vehicle to be placed in a particular section
 void Section::setVehicle(VehicleBase *vehicle){
     empty = false;
     this->vehicle = vehicle;
