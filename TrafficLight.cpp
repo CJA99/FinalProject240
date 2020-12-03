@@ -19,10 +19,10 @@ TrafficLight::TrafficLight(){
 
 /**
  * Typical use constructor
- * @param gLight green light time
- * @param yLight yellow light time
- * @param rLight red light time
- * @param color initial color
+ * @param gLight the length of a green light
+ * @param yLight the length of a yellow light
+ * @param rLight the length of a red light
+ * @param color the color of the light when initialized
  */
 TrafficLight::TrafficLight(int gLight, int yLight, int rLight, LightColor color){
 
