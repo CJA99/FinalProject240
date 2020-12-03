@@ -15,6 +15,13 @@ TrafficLight::TrafficLight(){
     color = LightColor::red;
 }
 
+/* constructor which creates the trafficlight
+ *
+ * @param gLight the length of a green light
+ * @param yLight the length of a yellow light
+ * @param rLight the length of a red light
+ * @param color the color of the light when initialized
+ */
 TrafficLight::TrafficLight(int gLight, int yLight, int rLight, LightColor color){
     green = gLight;
     yellow = yLight;
@@ -28,6 +35,7 @@ TrafficLight::TrafficLight(int gLight, int yLight, int rLight, LightColor color)
         countDown = red;
 }
 
+// this method counts down the time left on each light
 void TrafficLight::decrement(){
     countDown--;
     if(countDown == 0){
