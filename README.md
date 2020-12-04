@@ -3,6 +3,7 @@ Authors: Nat Asmelash, Nikita Morozov, Deborah Maidoh, Carter Angelus
 
 ## Direction for compiling:
 To compile the program use the Makefile provided, type: make
+
 To execute the simulation: ./sim [input file] [initial seed]
 
 ## Design Decisions:
