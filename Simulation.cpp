@@ -177,7 +177,7 @@ void Simulation::createVehicle(Lane *lane, double laneProb, double createProb,
 				veh = new Vehicle(lane, VehicleType::car, false);
 		}
 
-		// Create a SUV
+		// Create an SUV
 		else if(vehicleProb <= proportionCars + proportionSUVs){
 			if(turnProb <= probRightSUVs)
 				veh = new Vehicle(lane, VehicleType::suv, true);
