@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    // Rin simulation
+    // Run simulation
     Simulation sim(argv[1], seed);
     sim.runSim();
 
